@@ -19,6 +19,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 
 import org.springframework.data.annotation.CreatedDate;
 
@@ -39,7 +40,8 @@ public class Usuario implements Serializable {
 	@Column(name = "name")
 	private String nombre;
 	
-	@Email(message = "email invalido")
+	//@Email(message = "email invalido")
+	@Pattern(regexp = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$", message = "Email debe ser valido")
 	@Column(name = "email", unique = true) // unique campo unico en bd ...no puede repetirse
 	private String email; // no lleva name por que se llamara igual que el campo en la BD
 	
