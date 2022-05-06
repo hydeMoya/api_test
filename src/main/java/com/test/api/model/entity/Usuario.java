@@ -25,16 +25,15 @@ import org.springframework.data.annotation.CreatedDate;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-//import javax.validation.constraints.Email;
-//import javax.validation.constraints.NotNull;
-//import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "Usuario")
 public class Usuario implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	@Column(name = "name")
@@ -74,10 +73,25 @@ public class Usuario implements Serializable {
 	//@JsonIgnore
 	private List<Telefono> phones;// Lista que declara 1 a N entre la clase usuario y telefono
 	
-	public Usuario() {
-		
+	public Usuario () {
+		super();
 	}
 	
+	public Usuario(Long id, String nombre, String email,
+			String password, Date created, Date modified, Date lastLogin, String token, boolean isActive,
+			List<Telefono> phones) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.email = email;
+		this.password = password;
+		this.created = created;
+		this.modified = modified;
+		this.lastLogin = lastLogin;
+		this.token = token;
+		this.isActive = isActive;
+		this.phones = phones;
+	}
 
 	public Long getId() {
 		return id;

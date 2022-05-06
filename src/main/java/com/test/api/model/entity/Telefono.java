@@ -5,17 +5,17 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "Telefono")
 public class Telefono implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,13 +31,20 @@ public class Telefono implements Serializable {
 	private String codigoPais;
 
 	 @ManyToOne(fetch = FetchType.LAZY)
-	 //@JoinColumn(foreignKey = @ForeignKey(name = "usuario_id"), name = "usuario_id")
 	 private Usuario usuario;
 	
 	public Telefono(){
 		
 	}
 	
+	public Telefono(Long telefono_id, String numero, String codigoCiudad, String codigoPais) {
+		super();
+		this.telefono_id = telefono_id;
+		this.numero = numero;
+		this.codigoCiudad = codigoCiudad;
+		this.codigoPais = codigoPais;
+	}
+
 	public Long getTelefono_id() {
 		return telefono_id;
 	}

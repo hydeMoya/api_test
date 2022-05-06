@@ -30,11 +30,11 @@ public class SwaggerConfig {
 	
 	private ApiInfo getApiInfo() {
 		return new ApiInfo(
-				"Documentación Test Tareas",
-				"Documentación Test Tareas",
+				"Documentación Test Api",
+				"Documentación Test Api",
 				"1.0",
-				"http://www.tarea.cl",
-				new Contact("Codmind", "http://www.tarea.cl", "tarea@tarea.com"),
+				"http://www.api.cl",
+				new Contact("Codmind", "http://www.api.cl", "api@api.com"),
 				"LICENSE",
 				"LICENSE URL",
 				Collections.emptyList()
