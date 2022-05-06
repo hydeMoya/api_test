@@ -40,6 +40,9 @@ raw JSON
 - Ejecutar
 ```
 - Para ingresar a BD H2
-- http://localhost:9095/h2-console 
-- user:h2
-- password:h2
+``` sh
+ http://localhost:9095/h2-console 
+ user:h2
+ password:h2
+```
+- Ejecutar Documentación Swagger en browser de navegador con siguiente url : http://localhost:9095/swagger-ui/index.html 
