@@ -13,8 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
-
-import com.test.api.model.dao.TelefonoRepository;
 import com.test.api.model.dao.UsuarioRepository;
 import com.test.api.model.dto.UsuarioRequest;
 import com.test.api.model.entity.Telefono;
@@ -25,9 +23,6 @@ public class UsuarioService {
 	
 	@Autowired
     private UsuarioRepository  usuarioRepository;
-    @Autowired
-    private TelefonoRepository telefonoRepository;
-    
     Usuario usuario = new Usuario();
     Telefono telefono = new Telefono();
     
@@ -38,11 +33,9 @@ public class UsuarioService {
     	
     	Date fechaCreacion = fechaActual();	
     	List<Telefono> listPhono = new ArrayList<>();
-    	
     	String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-    	
     	//System.out.println("token->"+token);
-    	
+    	usuario = new Usuario();
     	usuario.setNombre(req.getName());
     	usuario.setEmail(req.getEmail());
     	usuario.setPassword(req.getPassword());
@@ -52,17 +45,31 @@ public class UsuarioService {
     	usuario.setToken(token);
     	usuario.setActive(true);
     	
-    	
-    	telefono.setNumero(req.getPhones().get(0).getNumber());
-    	telefono.setCodigoCiudad(req.getPhones().get(0).getCitycode());
-    	telefono.setCodigoPais(req.getPhones().get(0).getContrycode());
-    	
-    	listPhono.add(telefono);
-    	
+    	for(int i=0; i< req.getPhones().size(); i++){
+		telefono = new Telefono();	
+    	telefono.setNumero(req.getPhones().get(i).getNumber());
+    	telefono.setCodigoCiudad(req.getPhones().get(i).getCitycode());
+    	telefono.setCodigoPais(req.getPhones().get(i).getContrycode());
+
+		listPhono.add(telefono);
+
+		}
     	usuario.setPhones(listPhono);
-    
+
+		//System.out.println("lista Final usuario retornado size ::: "+ usuario.getPhones().size());
+
+		/*for(int i=0; i< usuario.getPhones().size();i++){
+			System.out.println("telefono lista :::"+ usuario.getPhones().get(i).getNumero());
+		}*/
         return usuarioRepository.save(usuario);
     }
+
+
+	//busqueda por @QueryJpa
+	public String findByEmail(String email){
+
+		return usuarioRepository.findByEmail(email);
+	}
     
     public Date fechaActual() {
     	

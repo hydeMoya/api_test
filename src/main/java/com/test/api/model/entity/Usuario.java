@@ -8,23 +8,16 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 
 import org.springframework.data.annotation.CreatedDate;
-
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "Usuario")
@@ -33,14 +26,15 @@ public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id_usuario")
 	private Long id;
 
 	@Column(name = "name")
 	private String nombre;
 	
 	//@Email(message = "email invalido")
-	@Pattern(regexp = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$", message = "Email debe ser valido")
+	//@Pattern(regexp = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$", message = "Email debe ser valido")
 	@Column(name = "email", unique = true) // unique campo unico en bd ...no puede repetirse
 	private String email; // no lleva name por que se llamara igual que el campo en la BD
 	
@@ -66,12 +60,9 @@ public class Usuario implements Serializable {
 	@Column(name = "is_active")
 	private boolean isActive;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true) // , mappedBy = "usuario" cascade es por si se borra un registro en la tabla Usuario se borrara
-											// registro en la tabla Telefonos
-	@JoinColumn(name = "usuario_id", referencedColumnName = "id") // Une la columna usuario_id de la tabla telefono con
-																	// la columna id de la tabla Usuario
-	//@JsonIgnore
-	private List<Telefono> phones;// Lista que declara 1 a N entre la clase usuario y telefono
+	//oneToMany significa que 1 usuario puede tener muchos telefonos
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL) //cascadeTypeAll es para eliminar usuario y todos sus telefonos asignados al momento de eliminar
+	private List<Telefono> phones = new ArrayList<>();
 	
 	public Usuario () {
 		super();
@@ -171,7 +162,13 @@ public class Usuario implements Serializable {
 
 	public void setPhones(List<Telefono> phones) {
 		this.phones = phones;
+		for(Telefono telefono : phones){
+			telefono.setUsuario(this);
+		}
 	}
+
+	
+
 	
 	
 }

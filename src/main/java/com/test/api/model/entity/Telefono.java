@@ -8,8 +8,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 @Table(name = "Telefono")
@@ -19,6 +23,7 @@ public class Telefono implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id_telefono")
 	private Long telefono_id;
 	
 	@Column(name = "number")
@@ -30,8 +35,11 @@ public class Telefono implements Serializable {
 	@Column(name = "contrycode")
 	private String codigoPais;
 
-	 @ManyToOne(fetch = FetchType.LAZY)
-	 private Usuario usuario;
+	
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_usuario") //indica cual es propietaria
+	@JsonProperty(access = Access.WRITE_ONLY)// para evitar lazy initializacion Exception 
+	private Usuario usuario;
 	
 	public Telefono(){
 		
@@ -77,7 +85,13 @@ public class Telefono implements Serializable {
 		this.codigoPais = codigoPais;
 	}
 
-	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
 	
 	
 	
